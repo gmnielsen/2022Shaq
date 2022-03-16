@@ -23,6 +23,7 @@ public class ShooterSubsystem extends SubsystemBase {
   // here. Call these from Commands.
   private final Spark m_intakeSpark = new Spark(ShooterConstants.kShooterMotorPWM);
   private final CANVenom m_arm = new CANVenom(ShooterConstants.kArmMotor05CanBusID);
+  private boolean ARMUP = false;
 
   public ShooterSubsystem() {
     // initialization methods here
@@ -40,6 +41,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public void setPosition(double pos) {
     armTestUp();
     m_arm.setCommand(ControlMode.PositionControl, pos);
+    ARMUP = true;
   }
   // print out
   public void getPosition() {
@@ -47,10 +49,12 @@ public class ShooterSubsystem extends SubsystemBase {
     System.out.println(m_arm.getMaxAcceleration());
     System.out.println(m_arm.getMaxSpeed());
     System.out.println(m_arm.getBrakeCoastMode());
+    
   }
   // reset arm encoder position to 0.0
   public void resetPostion(double pos) {
     m_arm.resetPosition();
+    ARMUP = false;
   }
  
   // powers arm full
@@ -68,10 +72,10 @@ public class ShooterSubsystem extends SubsystemBase {
   public void armTestUp(){
     //m_arm.
     //m_arm.setSafetyEnabled(false);
-    m_arm.setPID(0.5, 0,0, 0.184, 0.5); //(1.5, 0,0, 0.184, 0)
+    m_arm.setPID(0.7, 0,0, 0.184, 0.0); //(1.5, 0,0, 0.184, 0)
     //m_arm.setMaxSpeed(0.0);
     //m_arm.setMaxAcceleration(20000.0);
-    //m_arm.clearMotionProfilePoints();    
+    //m_arm.clearMotionProfilePoints();
   }
   //power lift safety (full)
   public double testFullArmPower(double power){
@@ -118,6 +122,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    //if (ARMUP) m_arm.set(-5.0);
     // This method will be called once per scheduler run
   }
 }

@@ -127,7 +127,7 @@ public class RobotContainer {
     // arm
     final JoystickButton armUp = new JoystickButton(m_xboxController, Constants.kArmUp);
     //armUp.whenPressed(()-> m_shooter.setPosition(0.0));
-    armUp.whileHeld(() -> m_shooter.setPosition(-10.0));
+    armUp.whileHeld(() -> m_shooter.setPosition(-5.0));
     final JoystickButton armDown = new JoystickButton(m_xboxController, Constants.kArmDown);
     armDown.whileHeld(() -> m_shooter.setPosition(-18.0));
     //armDown.whileHeld(new StartEndCommand (()-> m_shooter.armRaiseFull(-0.50),()->m_shooter.armRaiseFull(0.0),m_shooter).withTimeout(0.10));
