@@ -68,10 +68,10 @@ public class ShooterSubsystem extends SubsystemBase {
   public void armTestUp(){
     //m_arm.
     //m_arm.setSafetyEnabled(false);
-    m_arm.setPID(1.2, 0,0, 0.184, 0.5); //(1.5, 0,0, 0.184, 0)
+    m_arm.setPID(0.5, 0,0, 0.184, 0.5); //(1.5, 0,0, 0.184, 0)
     //m_arm.setMaxSpeed(0.0);
     //m_arm.setMaxAcceleration(20000.0);
-    m_arm.clearMotionProfilePoints();    
+    //m_arm.clearMotionProfilePoints();    
   }
   //power lift safety (full)
   public double testFullArmPower(double power){
