@@ -38,10 +38,14 @@ public class ShooterSubsystem extends SubsystemBase {
     Constants.currentIntakeState = !state;
   }
   // set arm position command
-  public void setPosition(double pos) {
-    armTestUp();
+  public void setPositionRaise(double pos) {
+    armTestRaise();
     m_arm.setCommand(ControlMode.PositionControl, pos);
     ARMUP = true;
+  }
+  public void setPositionLower(double pos){
+    armTestLower();
+    m_arm.setCommand(ControlMode.PositionControl, pos);
   }
   // print out
   public void getPosition() {
@@ -69,7 +73,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   // testing
-  public void armTestUp(){
+  public void armTestRaise(){
     //m_arm.
     //m_arm.setSafetyEnabled(false);
     m_arm.setPID(0.7, 0,0, 0.184, 0.0); //(1.5, 0,0, 0.184, 0)
@@ -77,6 +81,10 @@ public class ShooterSubsystem extends SubsystemBase {
     //m_arm.setMaxAcceleration(20000.0);
     //m_arm.clearMotionProfilePoints();
   }
+  public void armTestLower(){
+    m_arm.setPID(0.7, 0.0, 0.0, 0.184, 0.0);
+  }
+
   //power lift safety (full)
   public double testFullArmPower(double power){
 
