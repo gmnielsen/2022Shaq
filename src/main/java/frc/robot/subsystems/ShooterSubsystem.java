@@ -48,13 +48,33 @@ public class ShooterSubsystem extends SubsystemBase {
     m_arm.setCommand(ControlMode.PositionControl, pos);
   }
   // print out
-  public void getPosition() {
+  public void getPositionConsole() {
     System.out.println(m_arm.getPosition());
     System.out.println(m_arm.getMaxAcceleration());
     System.out.println(m_arm.getMaxSpeed());
     System.out.println(m_arm.getBrakeCoastMode());
     
   }
+
+  // shuffleboard display components
+  // return current position
+  public double getPosition(){
+    return m_arm.getPosition();
+  }
+  public double getCurrentP(){
+    return m_arm.getKP();
+  }
+  public double getCurrentI(){
+    return m_arm.getKI();
+  }
+  public double getCurrentD(){
+    return m_arm.getKD();
+  }
+  public double getCurrentSetPosition(){
+    return m_arm.getMotionProfilePositionTarget();
+  }
+
+
   // reset arm encoder position to 0.0
   public void resetPostion(double pos) {
     m_arm.resetPosition();
@@ -77,6 +97,9 @@ public class ShooterSubsystem extends SubsystemBase {
     //m_arm.
     //m_arm.setSafetyEnabled(false);
     m_arm.setPID(0.7, 0,0, 0.184, 0.0); //(1.5, 0,0, 0.184, 0)
+    // drn -- change control mode from position to proportional and no power
+    // m_arm.setCommand(ControlMode.Proportional, 0.0);
+    //
     //m_arm.setMaxSpeed(0.0);
     //m_arm.setMaxAcceleration(20000.0);
     //m_arm.clearMotionProfilePoints();
