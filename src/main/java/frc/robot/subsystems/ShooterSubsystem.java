@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import javax.swing.text.Position;
+
 import com.playingwithfusion.CANVenom;
 import com.playingwithfusion.CANVenom.BrakeCoastMode;
 import com.playingwithfusion.CANVenom.ControlMode;
@@ -29,6 +31,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public ShooterSubsystem() {
     // initialization methods here
     m_arm.setBrakeCoastMode(BrakeCoastMode.Brake);
+    m_arm.resetPosition();
   }
 
   // on/off switch for the intake
@@ -42,7 +45,6 @@ public class ShooterSubsystem extends SubsystemBase {
   public void setPositionRaise(double pos) {
     armTestRaise();
     m_arm.setCommand(ControlMode.PositionControl, pos);
-    ARMUP = true;
   }
   public void setPositionLower(double pos){
     armTestLower();
@@ -97,7 +99,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public void armTestRaise(){
     //m_arm.
     //m_arm.setSafetyEnabled(false);
-    m_arm.setPID(0.7, 0,0, 0.184, 0.0); //(1.5, 0,0, 0.184, 0)
+    m_arm.setPID(0.7, 0,0, 0.184, 0.0); //(0.7, 0,0, 0.184, 0)
     // drn -- change control mode from position to proportional and no power
     // m_arm.setCommand(ControlMode.Proportional, 0.0);
     //
@@ -106,7 +108,7 @@ public class ShooterSubsystem extends SubsystemBase {
     //m_arm.clearMotionProfilePoints();
   }
   public void armTestLower(){
-    m_arm.setPID(0.7, 0.0, 0.0, 0.184, 0.0);
+    m_arm.setPID(0.7, 0.0, 0.0, 0.184, 0.0); //(0.7, 0.0, 0.0, 0.184, 0.0)
   }
 
   //power lift safety (full)
@@ -156,5 +158,11 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
     //if (ARMUP) m_arm.set(-5.0);
     // This method will be called once per scheduler run
+    if(m_arm.getPosition() == 0.0){
+      m_arm.setCommand(ControlMode.Proportional, 0.0);
+      }
+    if(m_arm.getPosition() < -18.0){
+      m_arm.setControlMode(ControlMode.Disabled);
+    }
   }
 }
