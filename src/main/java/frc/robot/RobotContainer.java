@@ -101,8 +101,8 @@ public class RobotContainer {
     // drive command to split-stick arcade drive
     // split stick is left and right sticks on the XBox
     m_robotDrive
-        .setDefaultCommand(new RunCommand(() -> m_robotDrive.arcadeDrive(-m_xboxController.getLeftX(),
-            -m_xboxController.getRightY()), m_robotDrive));
+        .setDefaultCommand(new RunCommand(() -> m_robotDrive.arcadeDrive(-m_xboxController.getRightY(),
+            -m_xboxController.getLeftX()), m_robotDrive));
 
     // drn -- sets up the driver's station to have options for autonomous
     m_chooser.addOption("Forward Auto", m_simpleDriveForward);
