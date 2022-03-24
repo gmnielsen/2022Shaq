@@ -23,7 +23,7 @@ public class ShooterSubsystem extends SubsystemBase {
   // here. Call these from Commands.
   private final Spark m_intakeSpark = new Spark(ShooterConstants.kShooterMotorPWM);
   private final CANVenom m_arm = new CANVenom(ShooterConstants.kArmMotor05CanBusID);
-  private boolean ARMUP = false;
+  //private boolean ARMUP = false;
 
   public ShooterSubsystem() {
     // initialization methods here
@@ -78,7 +78,7 @@ public class ShooterSubsystem extends SubsystemBase {
   // reset arm encoder position to 0.0
   public void resetPostion(double pos) {
     m_arm.resetPosition();
-    ARMUP = false;
+   // ARMUP = false;
   }
  
   // powers arm full
