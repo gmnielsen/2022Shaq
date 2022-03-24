@@ -52,6 +52,9 @@ public class RobotContainer {
 
   // drn -- shuffleboard tabs
   private final ShuffleboardTab sbConfig = Shuffleboard.getTab("Config");
+  private final ShuffleboardTab sbPID = Shuffleboard.getTab("PID tuning");
+
+  // drn -- 
 
   // Camera
   private UsbCamera camera01;
@@ -98,8 +101,8 @@ public class RobotContainer {
     // drive command to split-stick arcade drive
     // split stick is left and right sticks on the XBox
     m_robotDrive
-        .setDefaultCommand(new RunCommand(() -> m_robotDrive.arcadeDrive(-m_xboxController.getLeftX(),
-            -m_xboxController.getRightY()), m_robotDrive));
+        .setDefaultCommand(new RunCommand(() -> m_robotDrive.arcadeDrive(-m_xboxController.getRightY(),
+            -m_xboxController.getLeftX()), m_robotDrive));
 
     // drn -- sets up the driver's station to have options for autonomous
     m_chooser.addOption("Forward Auto", m_simpleDriveForward);
@@ -114,6 +117,9 @@ public class RobotContainer {
     // drn -- put camera on shuffleboard
     sbConfig.add(camera01).withSize(6, 5).withPosition(2, 0);
 
+    // drn -- put arm parameters on Shuffleboard
+    sbUpdatePID();
+
   } // end RobotContainer initialization methods
 
   /**
@@ -127,18 +133,21 @@ public class RobotContainer {
     // arm
     final JoystickButton armUp = new JoystickButton(m_xboxController, Constants.kArmUp);
     //armUp.whenPressed(()-> m_shooter.setPosition(0.0));
-    armUp.whileHeld(() -> m_shooter.setPosition(-10.0));
+    armUp.whileHeld(() -> m_shooter.setPositionRaise(0.0));
     final JoystickButton armDown = new JoystickButton(m_xboxController, Constants.kArmDown);
-    armDown.whileHeld(() -> m_shooter.setPosition(-18.0));
+    armDown.whileHeld(() -> m_shooter.setPositionLower(-19.0));
     //armDown.whileHeld(new StartEndCommand (()-> m_shooter.armRaiseFull(-0.50),()->m_shooter.armRaiseFull(0.0),m_shooter).withTimeout(0.10));
     final JoystickButton armPulseUp = new JoystickButton(m_xboxController, Constants.kArmPulseUp);
     armPulseUp.whenPressed(new StartEndCommand (()-> m_shooter.armRaisePulse(0.1),()->m_shooter.armRaisePulse(0.0),m_shooter).withTimeout(0.05));
     final JoystickButton armPulseDown = new JoystickButton(m_xboxController, Constants.kArmPulseDown);
     armPulseDown.whileHeld(new StartEndCommand (()-> m_shooter.armRaisePulse(-1.0),()->m_shooter.armRaisePulse(0.0),m_shooter).withTimeout(0.05));
 
-    //venom stuff
+    
     final JoystickButton positionGet = new JoystickButton(m_xboxController, Constants.kPrintPosition);
-    positionGet.whenPressed(() -> m_shooter.getPosition());
+    //positionGet.whenPressed(() -> sbUpdatePID());
+    // drn -- changed to add them to shuffleboard as well. Original command below  
+    positionGet.whenPressed(() -> m_shooter.getPositionConsole());
+    
     final JoystickButton positionReset = new JoystickButton(m_xboxController, Constants.kResetPostion);
     positionReset.whenPressed(() -> m_shooter.resetPostion(0.0));
 
@@ -153,6 +162,22 @@ public class RobotContainer {
     slowDown.whenPressed(() -> m_robotDrive.halfPower());
 
   } // end configureButtonBindins
+
+  // Putting values on the shuffleboard
+  private void sbUpdatePID(){
+    // drn -- put arm parameters on console
+    m_shooter.getPositionConsole();
+    // drn -- put arm parameters on Shuffleboard
+    sbPID.add("Arm angle", m_shooter.getPosition());
+    sbPID.add("Set position", m_shooter.getCurrentSetPosition());
+    sbPID.add("kP", m_shooter.getCurrentP());
+    sbPID.add("kI", m_shooter.getCurrentI());
+    sbPID.add("kD", m_shooter.getCurrentD());
+    
+    // example:
+    // sbPID.add("title", m_shooter);
+
+  } // end sbUpdatePID
 
   // Starting and adjusting camera
   private void cameraInit() {
