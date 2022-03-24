@@ -25,7 +25,7 @@ public class Dunks extends SequentialCommandGroup {
       new RunCommand(() -> m_shooter.intakeOn(0.0, true), m_shooter).withTimeout(0.1),
       new RunCommand(() -> m_robotDrive.simpleDrive(0.0), m_robotDrive).withTimeout(0.2),
       //reverse out of zone
-      new RunCommand(() -> m_robotDrive.arcadeDrive(0.0, AutoConstants.kPower), m_robotDrive).withTimeout(1.0)
+      new RunCommand(() -> m_robotDrive.arcadeDrive(AutoConstants.kPower, 0.0), m_robotDrive).withTimeout(1.0)
       );
   }
 }

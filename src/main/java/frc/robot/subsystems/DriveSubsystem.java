@@ -45,6 +45,9 @@ public class DriveSubsystem extends SubsystemBase {
     // pairing the motors
     m_oneWheel.follow(m_zeroWheel);
     m_twoWheel.follow(m_threeWheel);
+    //inverting one-side
+    m_zeroWheel.setInverted(true);
+    m_oneWheel.setInverted(true);
     //m_ahrs.     need to set up gyro
     //
     m_drive.setDeadband(0.15);
