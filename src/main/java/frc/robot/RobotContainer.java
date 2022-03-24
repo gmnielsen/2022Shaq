@@ -3,8 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 
-
-
 package frc.robot;
 
 import edu.wpi.first.cscore.UsbCamera;
@@ -72,23 +70,6 @@ public class RobotContainer {
 
   private final Command m_simpleShoot = new RunCommand(() -> m_shooter.intakeOn(-ShooterConstants.kIntakePower, false)); //needs to be false
   
-  
-
-  
-/*
-  private Command AutoDunk(DriveSubsystem drive, ShooterSubsystem intake) {
-    addCommands(
-        new RunCommand(() -> m_shooter.intakeOn(-ShooterConstants.kIntakePower, false), m_shooter),
-        new RunCommand(() -> m_robotDrive.arcadeDrive(-AutoConstants.kPower, 0.0), m_robotDrive)
-    );
-}
-*/
-/*
-   m_simpleShoot(() -> m_shooterMotor.intakeOn(ShooterConstants.kIntakePower, true), m_shooterMotor), 
-   m_robotDrive.arcadeDrive(() -> m_robotDrive.arcadeDrive(-AutoConstants.kPower, 0.0), () -> m_robotDrive.arcadeDrive(0.0, 0.0),
-   m_robotDrive).withTimeout(AutoConstants.kTimeOut)
-    .withTimeout(AutoConstants.kTimeOut));*/
- 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -133,7 +114,7 @@ public class RobotContainer {
     // arm
     final JoystickButton armUp = new JoystickButton(m_xboxController, Constants.kArmUp);
     //armUp.whenPressed(()-> m_shooter.setPosition(0.0));
-    armUp.whileHeld(() -> m_shooter.setPositionRaise(0.0));
+    armUp.whileHeld(() -> m_shooter.setPositionRaise(-1.0));
     final JoystickButton armDown = new JoystickButton(m_xboxController, Constants.kArmDown);
     armDown.whileHeld(() -> m_shooter.setPositionLower(-19.0));
     //armDown.whileHeld(new StartEndCommand (()-> m_shooter.armRaiseFull(-0.50),()->m_shooter.armRaiseFull(0.0),m_shooter).withTimeout(0.10));

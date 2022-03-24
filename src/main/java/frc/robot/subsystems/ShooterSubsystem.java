@@ -96,15 +96,16 @@ public class ShooterSubsystem extends SubsystemBase {
   public void armTestRaise(){
     //m_arm.
     //m_arm.setSafetyEnabled(false);
-    m_arm.setPID(0.7, 0,0, 0.184, 0.0); //(0.7, 0,0, 0.184, 0)
+    m_arm.setPID(1.6, 0, 0.01, 0.184, 0.0); //(0.7, 0,0, 0.184, 0)
     // drn -- change control mode from position to proportional and no power
     // m_arm.setCommand(ControlMode.Proportional, 0.0);
     //m_arm.setMaxSpeed(0.0);
     //m_arm.setMaxAcceleration(20000.0);
     //m_arm.clearMotionProfilePoints();
+    //System.out.println(m_arm.getPosition());
   }
   public void armTestLower(){
-    m_arm.setPID(0.7, 0.0, 0.0, 0.184, 0.03); //(0.7, 0.0, 0.0, 0.184, 0.05) B needs to be smaller than P
+    m_arm.setPID(0.2, 0.0, 0.0, 0.184, 0.088); //(0.7, 0.0, 0.0, 0.184, 0.05) B needs to be smaller than P
    // System.out.println(m_arm.getB());
 
   }
@@ -166,5 +167,6 @@ public class ShooterSubsystem extends SubsystemBase {
       m_arm.setB(0.0);
      // System.out.println(m_arm.getB());
     }
+    System.out.println(m_arm.getPosition());
   }
 }
