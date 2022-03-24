@@ -104,7 +104,9 @@ public class ShooterSubsystem extends SubsystemBase {
     //m_arm.clearMotionProfilePoints();
   }
   public void armTestLower(){
-    m_arm.setPID(0.7, 0.0, 0.0, 0.184, 0.0); //(0.7, 0.0, 0.0, 0.184, 0.0)
+    m_arm.setPID(0.7, 0.0, 0.0, 0.184, 0.03); //(0.7, 0.0, 0.0, 0.184, 0.05) B needs to be smaller than P
+   // System.out.println(m_arm.getB());
+
   }
 
   //power lift safety (full)
@@ -159,6 +161,10 @@ public class ShooterSubsystem extends SubsystemBase {
       }
     if(m_arm.getPosition() < -18.0){
       m_arm.setControlMode(ControlMode.Disabled);
+    }
+    if(m_arm.getPosition() < -14.0){
+      m_arm.setB(0.0);
+     // System.out.println(m_arm.getB());
     }
   }
 }
