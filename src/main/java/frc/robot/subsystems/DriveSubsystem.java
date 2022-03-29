@@ -9,10 +9,12 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.OIConstants;
 
 public class DriveSubsystem extends SubsystemBase {
   // drn --
@@ -34,9 +36,12 @@ public class DriveSubsystem extends SubsystemBase {
   private final DifferentialDrive m_drive =
     new DifferentialDrive(m_leftMotors, m_rightMotors);
 
+  private int Direction = 1;
+
   //private final AHRS m_ahrs =
   //  new AHRS(SPI.Port.kMXP);
-
+//private final RobotContainer m_container = new RobotContainer();
+//public final XboxController m_xboxController = new XboxController(OIConstants.kDriverControllerPort);
   //private final Encoder m_testEncoder = new Encoder(0, 1, false, EncodingType.k4X);
   /**
    * Creates a new ExampleSubsystem.
@@ -63,7 +68,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   // 
   public void arcadeDrive(double fwd, double rot){
-    m_drive.arcadeDrive(-fwd*Math.abs(fwd), rot);
+    m_drive.arcadeDrive(-fwd*Math.abs(fwd)*Direction, rot*Direction);
   }
 
   // straight driving... needs gyro added
@@ -87,6 +92,9 @@ public class DriveSubsystem extends SubsystemBase {
     Constants.powerState = !Constants.powerState;
   } // end winchOn
 
+  public void invertDrive(){
+    Direction = -Direction;
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

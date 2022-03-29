@@ -118,7 +118,7 @@ public class ShooterSubsystem extends SubsystemBase {
     //System.out.println(m_arm.getPosition());
   }
   public void armTestLower(){
-    m_arm.setPID(0.2, 0.0, 0.0, 0.184, 0.088); //(0.7, 0.0, 0.0, 0.184, 0.05) B needs to be smaller than P
+    m_arm.setPID(0.2, 0.0, 0.0, 0.184, 0.088); //(0.2, 0.0, 0.0, 0.184, 0.088) B needs to be smaller than P
    // System.out.println(m_arm.getB());
 
   }
@@ -171,7 +171,7 @@ public class ShooterSubsystem extends SubsystemBase {
     //if (ARMUP) m_arm.set(-5.0);
     // This method will be called once per scheduler run
     if(m_arm.getPosition() > 0.0){
-      m_arm.setCommand(ControlMode.Proportional, 0.0);
+      m_arm.setCommand(ControlMode.PositionControl, 0.0);
       }
     if(m_arm.getPosition() < -18.0){
       m_arm.setControlMode(ControlMode.Disabled);
@@ -181,5 +181,6 @@ public class ShooterSubsystem extends SubsystemBase {
      // System.out.println(m_arm.getB());
     }
     System.out.println(m_arm.getPosition());
+    System.out.println(m_arm.getControlMode());
   }
 }

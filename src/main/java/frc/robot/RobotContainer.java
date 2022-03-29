@@ -49,7 +49,7 @@ public class RobotContainer {
   private final ShooterSubsystem m_shooter = new ShooterSubsystem();
 
   // drn --- declaring an instance of the XBox controller
-  private final XboxController m_xboxController = new XboxController(OIConstants.kDriverControllerPort);
+  public final XboxController m_xboxController = new XboxController(OIConstants.kDriverControllerPort);
 
 
   // drn -- A chooser for autonomous commands
@@ -91,6 +91,7 @@ public class RobotContainer {
         .setDefaultCommand(new RunCommand(() -> m_robotDrive.arcadeDrive(-m_xboxController.getRightY(),
             -m_xboxController.getLeftX()), m_robotDrive));
 
+
     // drn -- sets up the driver's station to have options for autonomous
     m_chooser.addOption("Forward Auto", m_simpleDriveForward);
     m_chooser.addOption("Reverse Auto", m_simpleDriveReverse);
@@ -120,7 +121,7 @@ public class RobotContainer {
     // arm
     final JoystickButton armUp = new JoystickButton(m_xboxController, Constants.kArmUp);
     //armUp.whenPressed(()-> m_shooter.setPosition(0.0));
-    armUp.whileHeld(() -> m_shooter.setPositionRaise(-1.0)); //whileheld
+    armUp.whileHeld(() -> m_shooter.setPositionRaise(-2.0)); //whileheld
     final JoystickButton armDown = new JoystickButton(m_xboxController, Constants.kArmDown);
     armDown.whileHeld(() -> m_shooter.setPositionLower(-19.0));
     //armDown.whileHeld(new StartEndCommand (()-> m_shooter.armRaiseFull(-0.50),()->m_shooter.armRaiseFull(0.0),m_shooter).withTimeout(0.10));
@@ -144,9 +145,11 @@ public class RobotContainer {
     final  JoystickButton intakeReverse = new JoystickButton(m_xboxController, Constants.kIntakeReverseButton);
     intakeReverse.whenPressed(() -> m_shooter.intakeOn(-ShooterConstants.kOutTakePower, Constants.currentIntakeState));
 
-    // speed
+    // speed/drive
     final JoystickButton slowDown = new JoystickButton(m_xboxController, Constants.kSlowDown);
     slowDown.whenPressed(() -> m_robotDrive.halfPower());
+    final JoystickButton invertDrive = new JoystickButton(m_xboxController, Constants.kInvertDrive);
+    invertDrive.whenPressed(() -> m_robotDrive.invertDrive());
 
   } // end configureButtonBindins
 

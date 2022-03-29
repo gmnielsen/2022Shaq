@@ -27,6 +27,7 @@ public final class Constants {
     public static boolean armUp = true;
     public static boolean winchState = false;
 	public static boolean powerState = false;
+    public static boolean driveState = false;
 
 /*
 
@@ -61,7 +62,7 @@ public final class Constants {
     */
     public static int kIntakeButton = XboxController.Button.kA.value;   
     public static int kIntakeReverseButton = XboxController.Button.kB.value;   
-    public static int kClimbOffButton = XboxController.Button.kX.value;
+    public static int kInvertDrive = XboxController.Button.kX.value;
     public static int kSlowDown = XboxController.Button.kY.value;   
     public static int kArmPulseDown = XboxController.Button.kStart.value;
     public static int kArmUp = XboxController.Button.kRightBumper.value;
