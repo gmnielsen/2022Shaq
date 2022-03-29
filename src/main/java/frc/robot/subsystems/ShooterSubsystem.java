@@ -7,10 +7,17 @@
 
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import com.playingwithfusion.CANVenom;
 import com.playingwithfusion.CANVenom.BrakeCoastMode;
 import com.playingwithfusion.CANVenom.ControlMode;
+
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ShooterConstants;
@@ -25,6 +32,10 @@ public class ShooterSubsystem extends SubsystemBase {
   private final CANVenom m_arm = new CANVenom(ShooterConstants.kArmMotor05CanBusID);
   //private boolean ARMUP = false;
 
+  private final ShuffleboardTab sbConfig = Shuffleboard.getTab("Config");
+  public final NetworkTableEntry sbKp = sbConfig.add("kP", 0.0).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0.0, "Max", 2.0)).getEntry();
+
+  
   public ShooterSubsystem() {
     // initialization methods here
     m_arm.setBrakeCoastMode(BrakeCoastMode.Brake);
@@ -96,7 +107,9 @@ public class ShooterSubsystem extends SubsystemBase {
   public void armTestRaise(){
     //m_arm.
     //m_arm.setSafetyEnabled(false);
-    m_arm.setPID(1.6, 0, 0.01, 0.184, 0.0); //(0.7, 0,0, 0.184, 0)
+    //m_arm.setExpiration(2.0);
+    m_arm.setPID(sbKp.getDouble(1.6), 0, 0.01, 0.184, 0.0); //(1.6, 0,0.01, 0.184, 0)
+
     // drn -- change control mode from position to proportional and no power
     // m_arm.setCommand(ControlMode.Proportional, 0.0);
     //m_arm.setMaxSpeed(0.0);
@@ -157,7 +170,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
     //if (ARMUP) m_arm.set(-5.0);
     // This method will be called once per scheduler run
-    if(m_arm.getPosition() == 0.0){
+    if(m_arm.getPosition() > 0.0){
       m_arm.setCommand(ControlMode.Proportional, 0.0);
       }
     if(m_arm.getPosition() < -18.0){

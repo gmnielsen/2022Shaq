@@ -7,11 +7,18 @@ package frc.robot;
 
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoSink;
+import edu.wpi.first.networktables.NetworkTableEntry;
+
+import java.util.Map;
+
+import com.playingwithfusion.CANVenom;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -49,8 +56,7 @@ public class RobotContainer {
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   // drn -- shuffleboard tabs
-  private final ShuffleboardTab sbConfig = Shuffleboard.getTab("Config");
-  private final ShuffleboardTab sbPID = Shuffleboard.getTab("PID tuning");
+  private final ShuffleboardTab sbCamera = Shuffleboard.getTab("Camera");
 
   // drn -- 
 
@@ -91,12 +97,12 @@ public class RobotContainer {
     m_chooser.addOption("Shoot Auto", m_simpleShoot);
     m_chooser.addOption("Auto Dunks", new Dunks(m_robotDrive, m_shooter));
     m_chooser.setDefaultOption("Auto Dunks", new Dunks(m_robotDrive, m_shooter));
-    sbConfig.add(m_chooser).withSize(3, 1).withPosition(0, 0);
+    sbCamera.add(m_chooser).withSize(3, 1).withPosition(0, 0);
 
     // drn -- put power onto shuffleboard
-    sbConfig.add("PDP voltage", pdp.getVoltage()).withSize(1, 1).withPosition(8, 0);
+    sbCamera.add("PDP voltage", pdp.getVoltage()).withSize(1, 1).withPosition(8, 0);
     // drn -- put camera on shuffleboard
-    sbConfig.add(camera01).withSize(6, 5).withPosition(2, 0);
+    sbCamera.add(camera01).withSize(6, 5).withPosition(2, 0);
 
     // drn -- put arm parameters on Shuffleboard
     sbUpdatePID();
@@ -114,7 +120,7 @@ public class RobotContainer {
     // arm
     final JoystickButton armUp = new JoystickButton(m_xboxController, Constants.kArmUp);
     //armUp.whenPressed(()-> m_shooter.setPosition(0.0));
-    armUp.whileHeld(() -> m_shooter.setPositionRaise(-1.0));
+    armUp.whileHeld(() -> m_shooter.setPositionRaise(-1.0)); //whileheld
     final JoystickButton armDown = new JoystickButton(m_xboxController, Constants.kArmDown);
     armDown.whileHeld(() -> m_shooter.setPositionLower(-19.0));
     //armDown.whileHeld(new StartEndCommand (()-> m_shooter.armRaiseFull(-0.50),()->m_shooter.armRaiseFull(0.0),m_shooter).withTimeout(0.10));
@@ -148,13 +154,14 @@ public class RobotContainer {
   private void sbUpdatePID(){
     // drn -- put arm parameters on console
     m_shooter.getPositionConsole();
-    // drn -- put arm parameters on Shuffleboard
+  
+  /*  // drn -- put arm parameters on Shuffleboard
     sbPID.add("Arm angle", m_shooter.getPosition());
     sbPID.add("Set position", m_shooter.getCurrentSetPosition());
     sbPID.add("kP", m_shooter.getCurrentP());
     sbPID.add("kI", m_shooter.getCurrentI());
     sbPID.add("kD", m_shooter.getCurrentD());
-    
+    */
     // example:
     // sbPID.add("title", m_shooter);
 
