@@ -46,6 +46,7 @@ public class ShooterSubsystem extends SubsystemBase {
     m_arm.setBrakeCoastMode(BrakeCoastMode.Brake);
     m_arm.resetPosition();
     m_arm.setControlMode(ControlMode.Disabled);
+    m_arm.setMaxSpeed(Constants.ShooterConstants.kMaxVenomPower);
   }
 
   // on/off switch for the intake
@@ -94,7 +95,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
   // reset arm encoder position to 0.0
   public void resetPostion(double pos) {
+    m_arm.setControlMode(ControlMode.Disabled);
     m_arm.resetPosition();
+    m_arm.setCommand(ControlMode.Proportional, 0.0);
    // ARMUP = false;
   }
  
@@ -178,7 +181,7 @@ public class ShooterSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     if(m_arm.getPosition() > 0.0){
       
-      m_arm.setCommand(ControlMode.PositionControl, 0.0);
+      m_arm.setCommand(ControlMode.Proportional, 0.0);
      
       //System.out.println(m_arm.getPosition());
       }
