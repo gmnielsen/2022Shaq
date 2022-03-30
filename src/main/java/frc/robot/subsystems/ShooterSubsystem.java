@@ -34,12 +34,24 @@ public class ShooterSubsystem extends SubsystemBase {
   //private boolean ARMUP = false;
 
   private final ShuffleboardTab sbConfig = Shuffleboard.getTab("Config");
-  public final NetworkTableEntry sbKp = sbConfig.add("kP Up", 0.0).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0.0, "Max", 2.0)).getEntry();
-  public final NetworkTableEntry sbPos = sbConfig.add("pos", m_arm.getPosition()).getEntry();
-  public final NetworkTableEntry sbKd = sbConfig.add("kD Up", 0.0).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0.0, "max", 2.0)).getEntry();
-  public final NetworkTableEntry sbKpDown = sbConfig.add("kP Down", 0.0).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0.0, "max", 2.0)).getEntry();
-  public final NetworkTableEntry sbBDown = sbConfig.add("B Down", 0.0).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0.0, "max", 2.0)).getEntry();
-  public final NetworkTableEntry sbKdDown = sbConfig.add("kD Down", 0.0).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0.0, "max", 2.0)).withPosition(2, 3).getEntry();
+  public final NetworkTableEntry sbPos = sbConfig.add("pos", m_arm.getPosition())
+    .withPosition(0, 0).getEntry();
+  public final NetworkTableEntry sbKp = sbConfig.add("kP Up", Constants.ShooterConstants.KpUp)
+    .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0.0, "Max", 2.0))
+    .withPosition(0, 1).getEntry();
+  public final NetworkTableEntry sbKd = sbConfig.add("kD Up", Constants.ShooterConstants.KdUp)
+    .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0.0, "max", 2.0))
+    .withPosition(2, 1).getEntry();
+  public final NetworkTableEntry sbKpDown = sbConfig.add("kP Down", Constants.ShooterConstants.KpDown)
+    .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0.0, "max", 2.0))
+    .withPosition(0, 2).getEntry();
+  public final NetworkTableEntry sbKdDown = sbConfig.add("kD Down", Constants.ShooterConstants.KdDown)
+    .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0.0, "max", 2.0))
+    .withPosition(2, 2).getEntry();
+  public final NetworkTableEntry sbBDown = sbConfig.add("B Down", Constants.ShooterConstants.KBDown)
+    .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0.0, "max", 1.0))
+    .withPosition(4, 2).getEntry();
+
 
   public ShooterSubsystem() {
     // initialization methods here

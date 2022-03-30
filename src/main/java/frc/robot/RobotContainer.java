@@ -92,15 +92,14 @@ public class RobotContainer {
     m_chooser.addOption("Shoot Auto", m_simpleShoot);
     m_chooser.addOption("Auto Dunks", new Dunks(m_robotDrive, m_shooter));
     m_chooser.setDefaultOption("Auto Dunks", new Dunks(m_robotDrive, m_shooter));
-    sbCamera.add(m_chooser).withSize(3, 1).withPosition(0, 0);
+    sbCamera.add(m_chooser).withSize(2, 1).withPosition(0, 0);
 
     // drn -- put power onto shuffleboard
-    sbCamera.add("PDP voltage", pdp.getVoltage()).withSize(1, 1).withPosition(8, 0);
+    sbCamera.add("PDP voltage", pdp.getVoltage())
+      .withSize(1, 1).withPosition(0, 2);
     // drn -- put camera on shuffleboard
-    sbCamera.add(camera01).withSize(6, 5).withPosition(2, 0);
-
-    // drn -- put arm parameters on Shuffleboard
-    sbUpdatePID();
+    sbCamera.add(camera01)
+      .withSize(6, 4).withPosition(2, 0);
 
   } // end RobotContainer initialization methods
 
@@ -140,29 +139,13 @@ public class RobotContainer {
     intakeReverse.whenPressed(() -> m_shooter.intakeOn(-ShooterConstants.kOutTakePower, Constants.currentIntakeState));
 
     // speed/drive
-    final JoystickButton slowDown = new JoystickButton(m_xboxController, Constants.kSlowDown);
+    /* final JoystickButton slowDown = new JoystickButton(m_xboxController, Constants.kSlowDown);
     slowDown.whenPressed(() -> m_robotDrive.halfPower());
+    */
     final JoystickButton invertDrive = new JoystickButton(m_xboxController, Constants.kInvertDrive);
     invertDrive.whenPressed(() -> m_robotDrive.invertDrive());
 
   } // end configureButtonBindins
-
-  // Putting values on the shuffleboard
-  private void sbUpdatePID(){
-    // drn -- put arm parameters on console
-    m_shooter.getPositionConsole();
-  
-  /*  // drn -- put arm parameters on Shuffleboard
-    sbPID.add("Arm angle", m_shooter.getPosition());
-    sbPID.add("Set position", m_shooter.getCurrentSetPosition());
-    sbPID.add("kP", m_shooter.getCurrentP());
-    sbPID.add("kI", m_shooter.getCurrentI());
-    sbPID.add("kD", m_shooter.getCurrentD());
-    */
-    // example:
-    // sbPID.add("title", m_shooter);
-
-  } // end sbUpdatePID
 
   // Starting and adjusting camera
   private void cameraInit() {
