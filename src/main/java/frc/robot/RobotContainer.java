@@ -3,12 +3,11 @@
 // the WPILib BSD license file in the root directory of this project.
 
 
-
-
 package frc.robot;
 
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoSink;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -44,15 +43,14 @@ public class RobotContainer {
   private final ShooterSubsystem m_shooter = new ShooterSubsystem();
 
   // drn --- declaring an instance of the XBox controller
-  private final XboxController m_xboxController = new XboxController(OIConstants.kDriverControllerPort);
+  public final XboxController m_xboxController = new XboxController(OIConstants.kDriverControllerPort);
 
 
   // drn -- A chooser for autonomous commands
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   // drn -- shuffleboard tabs
-  private final ShuffleboardTab sbConfig = Shuffleboard.getTab("Config");
-  private final ShuffleboardTab sbPID = Shuffleboard.getTab("PID tuning");
+  private final ShuffleboardTab sbCamera = Shuffleboard.getTab("Camera");
 
   // drn -- 
 
@@ -72,23 +70,6 @@ public class RobotContainer {
 
   private final Command m_simpleShoot = new RunCommand(() -> m_shooter.intakeOn(-ShooterConstants.kIntakePower, false)); //needs to be false
   
-  
-
-  
-/*
-  private Command AutoDunk(DriveSubsystem drive, ShooterSubsystem intake) {
-    addCommands(
-        new RunCommand(() -> m_shooter.intakeOn(-ShooterConstants.kIntakePower, false), m_shooter),
-        new RunCommand(() -> m_robotDrive.arcadeDrive(-AutoConstants.kPower, 0.0), m_robotDrive)
-    );
-}
-*/
-/*
-   m_simpleShoot(() -> m_shooterMotor.intakeOn(ShooterConstants.kIntakePower, true), m_shooterMotor), 
-   m_robotDrive.arcadeDrive(() -> m_robotDrive.arcadeDrive(-AutoConstants.kPower, 0.0), () -> m_robotDrive.arcadeDrive(0.0, 0.0),
-   m_robotDrive).withTimeout(AutoConstants.kTimeOut)
-    .withTimeout(AutoConstants.kTimeOut));*/
- 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -104,21 +85,21 @@ public class RobotContainer {
         .setDefaultCommand(new RunCommand(() -> m_robotDrive.arcadeDrive(-m_xboxController.getRightY(),
             -m_xboxController.getLeftX()), m_robotDrive));
 
+
     // drn -- sets up the driver's station to have options for autonomous
     m_chooser.addOption("Forward Auto", m_simpleDriveForward);
     m_chooser.addOption("Reverse Auto", m_simpleDriveReverse);
     m_chooser.addOption("Shoot Auto", m_simpleShoot);
     m_chooser.addOption("Auto Dunks", new Dunks(m_robotDrive, m_shooter));
     m_chooser.setDefaultOption("Auto Dunks", new Dunks(m_robotDrive, m_shooter));
-    sbConfig.add(m_chooser).withSize(3, 1).withPosition(0, 0);
+    sbCamera.add(m_chooser).withSize(2, 1).withPosition(0, 0);
 
     // drn -- put power onto shuffleboard
-    sbConfig.add("PDP voltage", pdp.getVoltage()).withSize(1, 1).withPosition(8, 0);
+    sbCamera.add("PDP voltage", pdp.getVoltage())
+      .withSize(1, 1).withPosition(0, 2);
     // drn -- put camera on shuffleboard
-    sbConfig.add(camera01).withSize(6, 5).withPosition(2, 0);
-
-    // drn -- put arm parameters on Shuffleboard
-    sbUpdatePID();
+    sbCamera.add(camera01)
+      .withSize(6, 4).withPosition(2, 0);
 
   } // end RobotContainer initialization methods
 
@@ -133,7 +114,7 @@ public class RobotContainer {
     // arm
     final JoystickButton armUp = new JoystickButton(m_xboxController, Constants.kArmUp);
     //armUp.whenPressed(()-> m_shooter.setPosition(0.0));
-    armUp.whileHeld(() -> m_shooter.setPositionRaise(0.0));
+    armUp.whileHeld(() -> m_shooter.setPositionRaise(-2.0)); //whileheld
     final JoystickButton armDown = new JoystickButton(m_xboxController, Constants.kArmDown);
     armDown.whileHeld(() -> m_shooter.setPositionLower(-19.0));
     //armDown.whileHeld(new StartEndCommand (()-> m_shooter.armRaiseFull(-0.50),()->m_shooter.armRaiseFull(0.0),m_shooter).withTimeout(0.10));
@@ -148,8 +129,8 @@ public class RobotContainer {
     // drn -- changed to add them to shuffleboard as well. Original command below  
     positionGet.whenPressed(() -> m_shooter.getPositionConsole());
     
-    final JoystickButton positionReset = new JoystickButton(m_xboxController, Constants.kResetPostion);
-    positionReset.whenPressed(() -> m_shooter.resetPostion(0.0));
+    final JoystickButton positionReset = new JoystickButton(m_xboxController, Constants.kResetPosition);
+    positionReset.whenPressed(() -> m_shooter.resetPosition(0.0));
 
     // intake/outake
     final JoystickButton intakeOn = new JoystickButton(m_xboxController, Constants.kIntakeButton);
@@ -157,27 +138,14 @@ public class RobotContainer {
     final  JoystickButton intakeReverse = new JoystickButton(m_xboxController, Constants.kIntakeReverseButton);
     intakeReverse.whenPressed(() -> m_shooter.intakeOn(-ShooterConstants.kOutTakePower, Constants.currentIntakeState));
 
-    // speed
-    final JoystickButton slowDown = new JoystickButton(m_xboxController, Constants.kSlowDown);
+    // speed/drive
+    /* final JoystickButton slowDown = new JoystickButton(m_xboxController, Constants.kSlowDown);
     slowDown.whenPressed(() -> m_robotDrive.halfPower());
+    */
+    final JoystickButton invertDrive = new JoystickButton(m_xboxController, Constants.kInvertDrive);
+    invertDrive.whenPressed(() -> m_robotDrive.invertDrive());
 
   } // end configureButtonBindins
-
-  // Putting values on the shuffleboard
-  private void sbUpdatePID(){
-    // drn -- put arm parameters on console
-    m_shooter.getPositionConsole();
-    // drn -- put arm parameters on Shuffleboard
-    sbPID.add("Arm angle", m_shooter.getPosition());
-    sbPID.add("Set position", m_shooter.getCurrentSetPosition());
-    sbPID.add("kP", m_shooter.getCurrentP());
-    sbPID.add("kI", m_shooter.getCurrentI());
-    sbPID.add("kD", m_shooter.getCurrentD());
-    
-    // example:
-    // sbPID.add("title", m_shooter);
-
-  } // end sbUpdatePID
 
   // Starting and adjusting camera
   private void cameraInit() {

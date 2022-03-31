@@ -27,6 +27,7 @@ public final class Constants {
     public static boolean armUp = true;
     public static boolean winchState = false;
 	public static boolean powerState = false;
+    public static boolean driveState = false;
 
 /*
 
@@ -61,14 +62,14 @@ public final class Constants {
     */
     public static int kIntakeButton = XboxController.Button.kA.value;   
     public static int kIntakeReverseButton = XboxController.Button.kB.value;   
-    public static int kClimbOffButton = XboxController.Button.kX.value;
-    public static int kSlowDown = XboxController.Button.kY.value;   
+    public static int kInvertDrive = XboxController.Button.kX.value;
+//    public static int kSlowDown = XboxController.Button.kY.value;   
     public static int kArmPulseDown = XboxController.Button.kStart.value;
     public static int kArmUp = XboxController.Button.kRightBumper.value;
     public static int kArmDown = XboxController.Button.kLeftBumper.value;
 	public static int kArmPulseUp = XboxController.Button.kBack.value;
     public static int kPrintPosition = XboxController.Button.kLeftStick.value;
-    public static int kResetPostion = XboxController.Button.kRightStick.value;
+    public static int kResetPosition = XboxController.Button.kY.value;
     
 
     
@@ -91,10 +92,18 @@ public final class Constants {
     }
     public final class ShooterConstants{        
         public static final int kArmMotor05CanBusID = 15;
+        public static final double kMaxVenomPower = 2000.0;
         public static final int kShooterMotorPWM = 0;
-        public static final double kArmPower = 0.5; 
-        public static final double kIntakePower = 0.25;
+        // kPID and B etc
+        public static final double KpUp = 1.6;
+        public static final double KdUp = 0.0;
+        public static final double KpDown = 0.3;
+        public static final double KdDown = 0.0;
+        public static final double KBDown = 0.09;
+        public static final double kIntakePower = 0.28;
         public static final double kOutTakePower = 0.7;
+        /*
+        
         public static final double kConveyorPulsePower = -0.4;
 		public static final double kConveyorFullPower = -0.6; //-0.6
 		public static final double kConveyorFiveBallEmpty = 2.0;
@@ -102,7 +111,7 @@ public final class Constants {
 		public static final double kUpperLowerRatio = 1.5; // original 1.0, changed to put top spin on ball
         public static final double kIntakeTime = 2.0;
         public static final double kUpperTime = 0.15;
-        /*
+        
         public static final double kUpperPower = -0.6;
         public static final double kLowerPower = -0.6; // -0.4 upped for arm passage
 		*/

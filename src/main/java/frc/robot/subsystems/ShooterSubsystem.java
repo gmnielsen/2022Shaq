@@ -7,10 +7,18 @@
 
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import com.playingwithfusion.CANVenom;
 import com.playingwithfusion.CANVenom.BrakeCoastMode;
 import com.playingwithfusion.CANVenom.ControlMode;
+
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ShooterConstants;
@@ -23,12 +31,34 @@ public class ShooterSubsystem extends SubsystemBase {
   // here. Call these from Commands.
   private final Spark m_intakeSpark = new Spark(ShooterConstants.kShooterMotorPWM);
   private final CANVenom m_arm = new CANVenom(ShooterConstants.kArmMotor05CanBusID);
-  private boolean ARMUP = false;
+  //private boolean ARMUP = false;
+
+  private final ShuffleboardTab sbConfig = Shuffleboard.getTab("Config");
+  public final NetworkTableEntry sbPos = sbConfig.add("pos", m_arm.getPosition())
+    .withPosition(0, 0).getEntry();
+  public final NetworkTableEntry sbKp = sbConfig.add("kP Up", Constants.ShooterConstants.KpUp)
+    .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0.0, "Max", 2.0))
+    .withPosition(0, 1).getEntry();
+  public final NetworkTableEntry sbKd = sbConfig.add("kD Up", Constants.ShooterConstants.KdUp)
+    .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0.0, "max", 2.0))
+    .withPosition(2, 1).getEntry();
+  public final NetworkTableEntry sbKpDown = sbConfig.add("kP Down", Constants.ShooterConstants.KpDown)
+    .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0.0, "max", 2.0))
+    .withPosition(0, 2).getEntry();
+  public final NetworkTableEntry sbKdDown = sbConfig.add("kD Down", Constants.ShooterConstants.KdDown)
+    .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0.0, "max", 2.0))
+    .withPosition(2, 2).getEntry();
+  public final NetworkTableEntry sbBDown = sbConfig.add("B Down", Constants.ShooterConstants.KBDown)
+    .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0.0, "max", 1.0))
+    .withPosition(4, 2).getEntry();
+
 
   public ShooterSubsystem() {
     // initialization methods here
     m_arm.setBrakeCoastMode(BrakeCoastMode.Brake);
     m_arm.resetPosition();
+    m_arm.setControlMode(ControlMode.Disabled);
+    m_arm.setMaxSpeed(Constants.ShooterConstants.kMaxVenomPower);
   }
 
   // on/off switch for the intake
@@ -76,9 +106,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
   // reset arm encoder position to 0.0
-  public void resetPostion(double pos) {
+  public void resetPosition(double pos) {
+    m_arm.setControlMode(ControlMode.Disabled);
     m_arm.resetPosition();
-    ARMUP = false;
+    m_arm.setCommand(ControlMode.Proportional, 0.0);
+   // ARMUP = false;
   }
  
   // powers arm full
@@ -96,15 +128,20 @@ public class ShooterSubsystem extends SubsystemBase {
   public void armTestRaise(){
     //m_arm.
     //m_arm.setSafetyEnabled(false);
-    m_arm.setPID(0.7, 0,0, 0.184, 0.0); //(0.7, 0,0, 0.184, 0)
+    //m_arm.setExpiration(2.0);
+    m_arm.setPID(sbKp.getDouble(1.6), 0, sbKd.getDouble(0.01), 0.184, 0.0); //(1.6, 0,0.01, 0.184, 0)
+
     // drn -- change control mode from position to proportional and no power
     // m_arm.setCommand(ControlMode.Proportional, 0.0);
     //m_arm.setMaxSpeed(0.0);
     //m_arm.setMaxAcceleration(20000.0);
     //m_arm.clearMotionProfilePoints();
+    //System.out.println(m_arm.getPosition());
   }
   public void armTestLower(){
-    m_arm.setPID(0.7, 0.0, 0.0, 0.184, 0.0); //(0.7, 0.0, 0.0, 0.184, 0.0)
+    m_arm.setPID(sbKpDown.getDouble(0.2), 0.0, sbKdDown.getDouble(0.0), 0.184, sbBDown.getDouble(0.088)); //(0.2, 0.0, 0.0, 0.184, 0.088) B needs to be smaller than P
+   System.out.println(m_arm.getKD());
+
   }
 
   //power lift safety (full)
@@ -154,11 +191,25 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
     //if (ARMUP) m_arm.set(-5.0);
     // This method will be called once per scheduler run
-    if(m_arm.getPosition() == 0.0){
+    if(m_arm.getPosition() > 0.0){
+      
       m_arm.setCommand(ControlMode.Proportional, 0.0);
+     
+      //System.out.println(m_arm.getPosition());
       }
+
     if(m_arm.getPosition() < -18.0){
+     
       m_arm.setControlMode(ControlMode.Disabled);
+     
     }
+    
+    if(m_arm.getPosition() < -14.0){
+      
+      m_arm.setB(0.0);
+      
+     // System.out.println(m_arm.getB());
+    }
+    SmartDashboard.putNumber("pos", m_arm.getPosition());
   }
 }
