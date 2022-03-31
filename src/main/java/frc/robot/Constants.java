@@ -69,7 +69,7 @@ public final class Constants {
     public static int kArmDown = XboxController.Button.kLeftBumper.value;
 	public static int kArmPulseUp = XboxController.Button.kBack.value;
     public static int kPrintPosition = XboxController.Button.kLeftStick.value;
-    public static int kResetPostion = XboxController.Button.kY.value;
+    public static int kResetPosition = XboxController.Button.kY.value;
     
 
     
@@ -100,7 +100,7 @@ public final class Constants {
         public static final double KpDown = 0.3;
         public static final double KdDown = 0.0;
         public static final double KBDown = 0.09;
-        public static final double kIntakePower = 0.25;
+        public static final double kIntakePower = 0.28;
         public static final double kOutTakePower = 0.7;
         /*
         

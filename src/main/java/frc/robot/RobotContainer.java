@@ -129,7 +129,7 @@ public class RobotContainer {
     // drn -- changed to add them to shuffleboard as well. Original command below  
     positionGet.whenPressed(() -> m_shooter.getPositionConsole());
     
-    final JoystickButton positionReset = new JoystickButton(m_xboxController, Constants.kResetPostion);
+    final JoystickButton positionReset = new JoystickButton(m_xboxController, Constants.kResetPosition);
     positionReset.whenPressed(() -> m_shooter.resetPosition(0.0));
 
     // intake/outake
