@@ -106,7 +106,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
   // reset arm encoder position to 0.0
-  public void resetPostion(double pos) {
+  public void resetPosition(double pos) {
     m_arm.setControlMode(ControlMode.Disabled);
     m_arm.resetPosition();
     m_arm.setCommand(ControlMode.Proportional, 0.0);

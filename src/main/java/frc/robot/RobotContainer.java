@@ -130,7 +130,7 @@ public class RobotContainer {
     positionGet.whenPressed(() -> m_shooter.getPositionConsole());
     
     final JoystickButton positionReset = new JoystickButton(m_xboxController, Constants.kResetPostion);
-    positionReset.whenPressed(() -> m_shooter.resetPostion(0.0));
+    positionReset.whenPressed(() -> m_shooter.resetPosition(0.0));
 
     // intake/outake
     final JoystickButton intakeOn = new JoystickButton(m_xboxController, Constants.kIntakeButton);
