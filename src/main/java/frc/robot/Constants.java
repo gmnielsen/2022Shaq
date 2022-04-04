@@ -92,15 +92,15 @@ public final class Constants {
     }
     public final class ShooterConstants{        
         public static final int kArmMotor05CanBusID = 15;
-        public static final double kMaxVenomPower = 2000.0;
+        public static final double kMaxVenomPower = 3000.0;
         public static final int kShooterMotorPWM = 0;
         // kPID and B etc
-        public static final double KpUp = 1.6;
+        public static final double KpUp = 2.0;
         public static final double KdUp = 0.0;
         public static final double KpDown = 0.3;
         public static final double KdDown = 0.0;
         public static final double KBDown = 0.09;
-        public static final double kIntakePower = 0.28;
+        public static final double kIntakePower = 0.33;
         public static final double kOutTakePower = 0.7;
         /*
         

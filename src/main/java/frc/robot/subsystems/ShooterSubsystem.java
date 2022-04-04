@@ -74,6 +74,10 @@ public class ShooterSubsystem extends SubsystemBase {
     m_arm.setCommand(ControlMode.PositionControl, pos);
   }
   public void setPositionLower(double pos){
+    // test for pos > -2, yes call reset
+    if(m_arm.getPosition() > -2){
+      m_arm.resetPosition();
+    }
     armTestLower();
     m_arm.setCommand(ControlMode.PositionControl, pos);
   }
